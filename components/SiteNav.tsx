@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { BusinessLogo } from '@/components/BusinessLogo'
 import { NAV_LINKS, SITE } from '@/lib/content'
+import { bookingPageUrl } from '@/lib/api'
 
 export function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -30,9 +31,9 @@ export function SiteNav() {
         </div>
 
         <div className="nav-actions">
-          <Link href="/book" className="btn btn-primary btn-sm nav-book">
+          <a href={bookingPageUrl()} className="btn btn-primary btn-sm nav-book">
             Book now →
-          </Link>
+          </a>
           <button
             type="button"
             className="nav-menu-btn"

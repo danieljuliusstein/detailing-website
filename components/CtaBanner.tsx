@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SITE } from '@/lib/content'
+import { bookingPageUrl } from '@/lib/api'
 
 export function GallerySection() {
   return (
@@ -36,9 +37,9 @@ export function CtaBanner() {
             </p>
           </div>
           <div className="cta-actions">
-            <Link href="/book" className="btn btn-primary">
+            <a href={bookingPageUrl()} className="btn btn-primary">
               Book now →
-            </Link>
+            </a>
             <Link href="/contact" className="btn btn-secondary">
               Get in touch
             </Link>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { fetchPackages, formatPrice } from '@/lib/api'
+import { fetchPackages, formatPrice, bookingPageUrl } from '@/lib/api'
 import { ServiceIcon, serviceIconForName } from '@/components/ServiceIcon'
 import { ServicesFallbackNotice } from '@/components/ServicesFallbackNotice'
 import { FALLBACK_SERVICES, type ServiceDisplay } from '@/lib/content'
@@ -60,9 +60,9 @@ export async function ServicesSection() {
           ))}
         </div>
         <p style={{ marginTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/book" className="btn btn-primary">
+          <a href={bookingPageUrl()} className="btn btn-primary">
             Book a service →
-          </Link>
+          </a>
           <Link href="/services" className="btn btn-secondary">
             All services →
           </Link>

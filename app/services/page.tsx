@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { fetchPackages, formatPrice } from '@/lib/api'
+import { fetchPackages, formatPrice, bookingPageUrl } from '@/lib/api'
 import { ServiceIcon, serviceIconForName } from '@/components/ServiceIcon'
 import { FALLBACK_SERVICES } from '@/lib/content'
 
@@ -65,9 +65,9 @@ export default async function ServicesPage() {
         </div>
 
         <p className="subpage-actions subpage-actions--center">
-          <Link href="/book" className="btn btn-primary">
+          <a href={bookingPageUrl()} className="btn btn-primary">
             Book a package →
-          </Link>
+          </a>
         </p>
       </div>
     </section>

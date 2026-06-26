@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { fetchBusinessInfo } from '@/lib/api'
+import { fetchBusinessInfo, bookingPageUrl } from '@/lib/api'
 import { SITE } from '@/lib/content'
 
 export const dynamic = 'force-dynamic'
@@ -55,9 +55,9 @@ export default async function ContactPage() {
         </div>
 
         <p className="subpage-actions">
-          <Link href="/book" className="btn btn-primary">
+          <a href={bookingPageUrl()} className="btn btn-primary">
             Book online instead →
-          </Link>
+          </a>
         </p>
       </div>
     </section>

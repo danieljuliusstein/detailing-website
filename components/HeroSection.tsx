@@ -1,10 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { SITE } from '@/lib/content'
-import { fetchAvailability, type AvailabilitySlot } from '@/lib/api'
+import { bookingPageUrl, fetchAvailability, type AvailabilitySlot } from '@/lib/api'
 
 export function HeroSection() {
   return (
@@ -18,9 +17,9 @@ export function HeroSection() {
             waiting room. Book online and we handle the rest.
           </p>
           <div className="hero-ctas">
-            <Link href="/book" className="btn btn-primary">
+            <a href={bookingPageUrl()} className="btn btn-primary">
               Book an appointment →
-            </Link>
+            </a>
             <Link href="/services" className="btn btn-secondary">
               View services
             </Link>
@@ -57,7 +56,6 @@ function todayIso() {
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 export function HeroCalendarWidget() {
-  const router = useRouter()
   const today = todayIso()
   const initial = new Date()
   const [year, setYear] = useState(initial.getFullYear())
@@ -140,7 +138,7 @@ export function HeroCalendarWidget() {
       return
     }
     const params = new URLSearchParams({ date: selectedDate, time: selectedTime })
-    router.push(`/book?${params.toString()}`)
+    window.location.href = bookingPageUrl(Object.fromEntries(params))
   }
 
   return (
