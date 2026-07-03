@@ -98,9 +98,11 @@ export function fetchBusinessInfo() {
   return apiGet<{ business: PublicBusinessInfo | null }>(publicApi('/business'))
 }
 
-export function fetchAvailability(date: string) {
+export function fetchAvailability(date: string, packageId?: string) {
+  const qs = new URLSearchParams({ date })
+  if (packageId) qs.set('packageId', packageId)
   return apiGet<{ date: string; slots: AvailabilitySlot[] }>(
-    `${publicApi('/availability')}?date=${encodeURIComponent(date)}`
+    `${publicApi('/availability')}?${qs.toString()}`
   )
 }
 
