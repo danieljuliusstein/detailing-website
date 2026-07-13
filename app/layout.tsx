@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { DM_Sans } from 'next/font/google'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteNav } from '@/components/SiteNav'
+import { PostHogInit } from '@/components/PostHogInit'
 import { businessLogoUrl } from '@/lib/api'
 import './globals.css'
 
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body suppressHydrationWarning>
+        <PostHogInit />
         <SiteNav />
         <main>{children}</main>
         <SiteFooter />
