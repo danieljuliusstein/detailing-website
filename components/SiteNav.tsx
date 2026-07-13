@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BusinessLogo } from '@/components/BusinessLogo'
 import { NAV_LINKS, SITE } from '@/lib/content'
@@ -8,9 +8,22 @@ import { bookingPageUrl } from '@/lib/api'
 
 export function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navScrollClasses = scrolled
+    ? 'bg-[#06060C]/90 backdrop-blur-xl border-b border-white/6'
+    : 'bg-transparent border-transparent'
 
   return (
-    <nav className="nav">
+    <nav className={`nav ${navScrollClasses}`}>
       <div className="container">
         <Link href="/" className="nav-brand" onClick={() => setMenuOpen(false)}>
           <BusinessLogo width={32} height={32} />
@@ -22,7 +35,7 @@ export function SiteNav() {
             <Link
               key={link.label}
               href={link.href}
-              className="nav-link"
+              className="nav-link opacity-45 hover:opacity-100 transition-opacity"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}

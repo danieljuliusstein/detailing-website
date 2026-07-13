@@ -1,30 +1,176 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { SITE } from '@/lib/content'
+import { motion, useScroll, useTransform } from 'motion/react'
 import { bookingPageUrl, fetchAvailability, type AvailabilitySlot } from '@/lib/api'
 
+// ---------------------------------------------------------------------------
+// Animation helpers
+// ---------------------------------------------------------------------------
+
+function makeFadeUp(delay: number, reducedMotion: boolean) {
+  return {
+    initial: 'hidden',
+    animate: 'show',
+    variants: {
+      hidden: { opacity: 0, y: 22 },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: reducedMotion ? 0 : 0.58,
+          delay: reducedMotion ? 0 : delay,
+          ease: [0.21, 0.47, 0.32, 0.98] as [number, number, number, number],
+        },
+      },
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
+// HeroSection
+// ---------------------------------------------------------------------------
+
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReducedMotion(mq.matches)
+  }, [])
+
+  // Parallax: as the section scrolls out of view the calendar widget drops 60px.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+  const calendarY = useTransform(scrollYProgress, [0, 1], ['0px', '60px'])
+
   return (
-    <section className="hero">
-      <div className="container">
-        <div>
-          <p className="eyebrow">Premium mobile detailing · {SITE.location}</p>
-          <h1 className="hero-head">Your car deserves better care.</h1>
-          <p className="lead hero-sub">
-            Professional interior and exterior detailing at your location — no shop drop-off, no
-            waiting room. Book online and we handle the rest.
-          </p>
-          <div className="hero-ctas">
-            <a href={bookingPageUrl()} className="btn btn-primary">
-              Book an appointment →
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden"
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+    >
+      {/* Radial glow background */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(76,175,80,0.15), transparent)',
+        }}
+      />
+
+      {/* Grid texture overlay */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+          maskImage:
+            'radial-gradient(ellipse 80% 80% at 50% 20%, black, transparent)',
+          opacity: 0.4,
+        }}
+      />
+
+      <div className="container relative" style={{ paddingTop: '96px', paddingBottom: '64px' }}>
+        {/* Centered content column */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+
+          {/* Announcement badge — delay 0 */}
+          <motion.div
+            className="flex justify-center"
+            style={{ marginBottom: '28px' }}
+            {...makeFadeUp(0, reducedMotion)}
+          >
+            <div
+              className="inline-flex items-center gap-2 border border-white/10 bg-white/[0.03] px-4 py-1.5 rounded-full"
+              style={{ fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}
+            >
+              <span
+                className="animate-pulse rounded-full"
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  background: '#4caf50',
+                  flexShrink: 0,
+                  display: 'inline-block',
+                }}
+              />
+              <span className="font-mono" style={{ fontSize: '11px' }}>Now serving the Atlanta metro area</span>
+            </div>
+          </motion.div>
+
+          {/* Headline — delay 0.1s */}
+          <motion.h1
+            className="font-extrabold tracking-tight"
+            style={{
+              fontSize: 'clamp(40px, 7vw, 80px)',
+              lineHeight: 1.05,
+              marginBottom: '24px',
+              maxWidth: '900px',
+            }}
+            {...makeFadeUp(0.1, reducedMotion)}
+          >
+            <span className="block">Your car deserves</span>
+            <span className="block">
+              <span style={{ color: '#4caf50' }}>better care.</span>
+            </span>
+          </motion.h1>
+
+          {/* Subtitle — delay 0.2s */}
+          <motion.p
+            className="text-white/60"
+            style={{
+              fontSize: 'clamp(15px, 1.6vw, 18px)',
+              lineHeight: 1.7,
+              maxWidth: '520px',
+              marginBottom: '36px',
+            }}
+            {...makeFadeUp(0.2, reducedMotion)}
+          >
+            Professional interior and exterior detailing at your location — no shop drop-off,
+            no waiting room. Book online and we handle the rest.
+          </motion.p>
+
+          {/* CTAs — delay 0.3s */}
+          <motion.div
+            className="hero-ctas"
+            style={{ justifyContent: 'center', marginBottom: '28px' }}
+            {...makeFadeUp(0.3, reducedMotion)}
+          >
+            <a
+              href={bookingPageUrl()}
+              className="btn btn-primary"
+              style={{
+                boxShadow: '0 0 24px rgba(76,175,80,0.35)',
+                transition: 'box-shadow 0.15s, opacity 0.12s, transform 0.1s',
+              }}
+            >
+              Book now →
             </a>
-            <Link href="/services" className="btn btn-secondary">
+            <Link
+              href="/services"
+              className="btn btn-secondary"
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.6)',
+              }}
+            >
               View services
             </Link>
-          </div>
-          <div className="chip-row">
+          </motion.div>
+
+          {/* Trust chips — delay 0.4s */}
+          <motion.div
+            className="chip-row"
+            style={{ justifyContent: 'center', marginBottom: '48px' }}
+            {...makeFadeUp(0.4, reducedMotion)}
+          >
             <span className="chip">
               <span className="chip-dot" />
               ★ 5.0 · 47 reviews
@@ -37,9 +183,26 @@ export function HeroSection() {
               <span className="chip-dot" />
               Mobile service
             </span>
-          </div>
+          </motion.div>
+
+          {/* Calendar widget — parallax translateY */}
+          <motion.div
+            style={{
+              width: '100%',
+              maxWidth: '440px',
+              borderRadius: '16px',
+              border: '1px solid rgba(255,255,255,0.08)',
+              background: '#0D0D1A',
+              boxShadow: '0 32px 80px -10px rgba(0,0,0,0.7)',
+              overflow: 'hidden',
+              translateY: reducedMotion ? '0px' : calendarY,
+            }}
+            id="book"
+          >
+            <HeroCalendarWidget />
+          </motion.div>
+
         </div>
-        <HeroCalendarWidget />
       </div>
     </section>
   )
@@ -142,7 +305,7 @@ export function HeroCalendarWidget() {
   }
 
   return (
-    <div className="cal-widget" id="book">
+    <div className="cal-widget" style={{ background: 'transparent', border: 'none', borderRadius: 0 }}>
       <div className="cal-header">
         <button type="button" className="cal-arrow" onClick={prevMonth} aria-label="Previous month">
           ‹

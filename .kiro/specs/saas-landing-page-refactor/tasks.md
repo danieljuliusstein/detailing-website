@@ -14,18 +14,18 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
 
 ## Tasks
 
-- [ ] 1. Install dependencies and configure Tailwind CSS v4
-  - [ ] 1.1 Install Tailwind CSS v4 and the motion/react and lucide-react packages
+- [x] 1. Install dependencies and configure Tailwind CSS v4
+  - [x] 1.1 Install Tailwind CSS v4 and the motion/react and lucide-react packages
     - Run `npm install -D tailwindcss @tailwindcss/postcss` and `npm install motion lucide-react`
     - Verify installed versions: `tailwindcss` v4+, `motion` v12+, `lucide-react` latest
     - _Requirements: 2.1, 3.1, 3.2_
 
-  - [ ] 1.2 Update `postcss.config.mjs` for Tailwind v4
+  - [x] 1.2 Update `postcss.config.mjs` for Tailwind v4
     - Replace existing postcss config content with `export default { plugins: { '@tailwindcss/postcss': {} } }`
     - This is the only required plugin; do NOT add `autoprefixer` (not needed for Tailwind v4)
     - _Requirements: 2.1_
 
-  - [ ] 1.3 Update `app/globals.css` — Tailwind import, `@theme` block, and `--bg` token
+  - [x] 1.3 Update `app/globals.css` — Tailwind import, `@theme` block, and `--bg` token
     - Prepend `@import 'tailwindcss';` as the very first line of `globals.css`
     - Immediately after the `@import`, add an `@theme` block registering `--color-green: #4caf50;`
     - Change `--bg` in the `:root` block from `#111111` to `#06060C`
@@ -33,23 +33,23 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - Preserve all existing custom properties and BEM rules; Tailwind base styles are prepended, not a replacement
     - _Requirements: 1.1, 1.7, 2.2, 2.3, 4.1_
 
-- [ ] 2. Create shared utilities: `FadeUpWhenVisible` and `useCountUp`
-  - [ ] 2.1 Create `components/FadeUpWhenVisible.tsx`
+- [x] 2. Create shared utilities: `FadeUpWhenVisible` and `useCountUp`
+  - [x] 2.1 Create `components/FadeUpWhenVisible.tsx`
     - `'use client'` component using `useInView` from `motion/react` with `{ once: true, margin: '-60px' }`
     - Animate from `{ opacity: 0, y: 22 }` to `{ opacity: 1, y: 0 }` with `duration: 0.58` and `ease: [0.21, 0.47, 0.32, 0.98]`
     - Detect `prefers-reduced-motion` via `window.matchMedia`; set `duration: 0` when reduced motion is preferred
     - Props: `children: React.ReactNode`, `delay?: number` (default `0`), `className?: string`
     - _Requirements: 7.5, 9.6, 10.4, 16.8_
 
-  - [ ] 2.2 Create `hooks/useCountUp.ts`
+  - [x] 2.2 Create `hooks/useCountUp.ts`
     - Pure hook: `useCountUp(target: number, duration?: number, active?: boolean): number`
     - Uses `requestAnimationFrame` with cubic ease-out: `easing(p) = 1 - (1 - p)^3`
     - Returns `0` when `active` is `false`; returns `target` immediately when `target === 0`
     - Cancels the animation frame on cleanup
     - _Requirements: 8.2_
 
-- [ ] 3. Refactor `SiteNav` — transparent-to-frosted-glass scroll transition
-  - [ ] 3.1 Add scroll-based state and conditional classes to `SiteNav.tsx`
+- [x] 3. Refactor `SiteNav` — transparent-to-frosted-glass scroll transition
+  - [x] 3.1 Add scroll-based state and conditional classes to `SiteNav.tsx`
     - Add `scrolled` boolean state; attach a `scroll` listener on `window` in a `useEffect`, set `scrolled = true` when `window.scrollY > 20`, false otherwise; clean up listener on unmount
     - When `scrolled` is `false`: nav element classes `bg-transparent border-transparent`
     - When `scrolled` is `true`: nav element classes `bg-[#06060C]/90 backdrop-blur-xl border-b border-white/6`
@@ -59,7 +59,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6_
 
 - [ ] 4. Refactor `HeroSection` — full-viewport SaaS layout with entrance animations
-  - [ ] 4.1 Restructure `HeroSection.tsx` layout and visual elements
+  - [x] 4.1 Restructure `HeroSection.tsx` layout and visual elements
     - Add `'use client'` (already present); wrap section in `min-h-screen` with centered content
     - Add two `pointer-events-none` decorative divs: radial glow background and grid texture overlay (both as inline-style divs inside the section)
     - Add announcement badge: mono pill `"Now serving the Atlanta metro area"` with an animated green pulse dot (a span with `animate-pulse` and `bg-[#4caf50]` rounded-full)
@@ -69,7 +69,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - Preserve `HeroCalendarWidget` — only restyle its outer wrapper card to match SaaS card style (`rounded-2xl border border-white/8 bg-[#0D0D1A]`)
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.6, 5.8_
 
-  - [ ] 4.2 Add `motion/react` entrance animations and parallax scroll to `HeroSection.tsx`
+  - [-] 4.2 Add `motion/react` entrance animations and parallax scroll to `HeroSection.tsx`
     - Import `motion`, `useScroll`, `useTransform` from `motion/react`
     - Wrap badge, headline spans, subtitle, CTAs, and trust chips in `motion.div` / `motion.span` with staggered `fadeUp` variants (`hidden: { opacity: 0, y: 22 }`, `show: { opacity: 1, y: 0 }`)
     - Wrap `HeroCalendarWidget` in a `motion.div` using `useScroll`/`useTransform` for `translateY` parallax: translate from `0` to `60px` as the section scrolls out
@@ -77,7 +77,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 5.5, 5.7_
 
 - [ ] 5. Create `WorkflowSection` — sticky scroll with step mockups
-  - [ ] 5.1 Create step mockup sub-components inside `components/WorkflowSection.tsx`
+  - [x] 5.1 Create step mockup sub-components inside `components/WorkflowSection.tsx`
     - `BookingMockup`: form card showing Service, Date, Time fields; green accent on button/badge; green `#4caf50` replaces all `blue-600` / `blue-400` references from the prototype
     - `CalendarMockup`: week calendar card with a new booking highlighted in green; green replaces blue
     - `LocationMockup`: map/location card with address and ETA; green accent
@@ -85,7 +85,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - All mockup cards use `rounded-2xl border border-white/8 bg-[#0D0D1A]` wrapper
     - _Requirements: 6.5, 1.4_
 
-  - [ ] 5.2 Build the `WorkflowSection` sticky scroll layout
+  - [-] 5.2 Build the `WorkflowSection` sticky scroll layout
     - `'use client'` component; import `useScroll`, `useEffect`, `useState`, `motion` from `motion/react`
     - Section total height: `4 * 100vh` (`style={{ height: '400vh' }}`); inner container: `position: sticky; top: 0; height: 100vh`
     - Read step content from `STEPS` in `lib/content.ts` (titles, descriptions); pair each with its mockup component
@@ -97,13 +97,13 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - On mobile (`< 768px`): collapse to single-column stacked list, hide sticky scroll behavior
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 16.2_
 
-  - [ ] 5.3 Create `WorkflowSectionStatic` fallback and loader
+  - [~] 5.3 Create `WorkflowSectionStatic` fallback and loader
     - `WorkflowSectionStatic`: a server-compatible component (no client hooks) that renders all four steps expanded, first step visually active; same content from `STEPS`
     - Create `components/WorkflowSectionLoader.tsx` mirroring the `ProcessSectionLoader` pattern: use `next/dynamic` with `ssr: false` and `loading: () => <WorkflowSectionStatic />`
     - _Requirements: 6.7_
 
-- [ ] 6. Create `FeaturesGrid` section
-  - [ ] 6.1 Create `components/FeaturesGrid.tsx`
+- [x] 6. Create `FeaturesGrid` section
+  - [x] 6.1 Create `components/FeaturesGrid.tsx`
     - `'use client'` component (needed for `FadeUpWhenVisible`)
     - Six Atlas feature cards with `lucide-react` icons: Mobile Service (`Car`, col-span-2), Fully Insured (`Shield`, col-span-1), Online Booking (`Calendar`, col-span-1), Instant Confirmation (`Bell`, col-span-1), Before & After Photos (`Camera`, col-span-1), 5-Star Rated (`Star`, col-span-2)
     - Grid: `grid grid-cols-3` on desktop, `grid-cols-1` on mobile
@@ -112,8 +112,8 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - Wrap each card in `<FadeUpWhenVisible delay={i * 0.06}>`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 16.4_
 
-- [ ] 7. Create `StatsBar` section
-  - [ ] 7.1 Create `components/StatsBar.tsx`
+- [x] 7. Create `StatsBar` section
+  - [x] 7.1 Create `components/StatsBar.tsx`
     - `'use client'` component
     - Three stats: `{ target: 47, format: v => \`\${v}+\`, label: 'Google reviews', sub: '5.0 average rating' }`, `{ target: 50, format: v => \`\${(v / 10).toFixed(1)}★\`, label: 'Star rating', sub: 'Across all reviews' }`, `{ target: 0, format: () => 'Atlanta metro', label: 'Service area', sub: 'Mobile — we come to you' }` (note: third stat is non-numeric, render statically)
     - Use `useInView({ once: true, margin: '-80px' })` from `motion/react` to trigger count-up; pass `active` to `useCountUp`
@@ -122,7 +122,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 16.5_
 
 - [ ] 8. Restyle `ServicesSection` — preserve all data logic, update card styles
-  - [ ] 8.1 Add a thin `ServiceCardAnimated` client wrapper and restyle service cards
+  - [-] 8.1 Add a thin `ServiceCardAnimated` client wrapper and restyle service cards
     - Create `components/ServiceCardAnimated.tsx` as a `'use client'` component that wraps children in `<FadeUpWhenVisible>`
     - In `ServicesSection.tsx` (which remains an async RSC), import `ServiceCardAnimated` and wrap each `<article>` in it
     - Update `<article>` className to `rounded-2xl border border-white/6 bg-white/2 hover:bg-white/4 transition-all` (keep existing `service-card` class for structural CSS that still applies)
@@ -132,7 +132,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
 
 - [ ] 9. Restyle `ProcessSection` — CSS-only, GSAP untouched
-  - [ ] 9.1 Update process step card styles in `globals.css`
+  - [-] 9.1 Update process step card styles in `globals.css`
     - Scope all changes to `.process-section` rules only
     - Update `.process-section .process-step` to add `background: rgba(255,255,255,0.02)`, `border: 0.5px solid rgba(255,255,255,0.06)`, `border-radius: 16px`, `padding: 16px`
     - Update section eyebrow and headline pattern: add utility classes to the eyebrow `<p>` in `ProcessSection.tsx` for `font-mono text-[10px] uppercase tracking-[0.2em]`
@@ -149,7 +149,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
 
 - [ ] 11. Restyle `CtaBanner` — rounded card, radial glow, badge, green button glow
-  - [ ] 11.1 Update `CtaBanner.tsx` with SaaS card layout
+  - [~] 11.1 Update `CtaBanner.tsx` with SaaS card layout
     - The `<div className="cta-banner">` wrapper: replace with `rounded-3xl border border-white/8 relative overflow-hidden`
     - Add a `pointer-events-none` absolute div as a radial glow: `background: radial-gradient(ellipse at 50% 0%, rgba(76,175,80,0.18), transparent 60%)`
     - Add a `pointer-events-none` absolute div as a grid texture overlay
@@ -160,7 +160,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 12.1, 12.2, 12.3, 12.4_
 
 - [ ] 12. Restyle `SiteFooter` — multi-column grid layout
-  - [ ] 12.1 Update `SiteFooter.tsx` with multi-column grid
+  - [~] 12.1 Update `SiteFooter.tsx` with multi-column grid
     - Change `.footer .container` layout to `grid grid-cols-2 md:grid-cols-[1fr_auto_auto] gap-12`
     - Brand column: `BusinessLogo` + business name + tagline `"Premium mobile car detailing · Atlanta, GA"` in `text-xs text-white/30`
     - Nav links column: existing `NAV_LINKS`
@@ -171,20 +171,20 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5_
 
 - [ ] 13. Restyle Contact and Services sub-pages
-  - [ ] 13.1 Update `app/contact/page.tsx` card panel styles
+  - [~] 13.1 Update `app/contact/page.tsx` card panel styles
     - Replace `.card-raised` className on the contact panel div with `rounded-2xl border border-white/6 bg-white/2 p-6`
     - Restyle eyebrow and heading using SaaS heading pattern (same as other sections)
     - Preserve `export const dynamic = 'force-dynamic'`, all `fetchBusinessInfo()` logic, conditional phone/email display, and fallback messaging
     - _Requirements: 14.1, 14.3_
 
-  - [ ] 13.2 Update `app/services/page.tsx` card grid styles
+  - [~] 13.2 Update `app/services/page.tsx` card grid styles
     - Update `<article>` className to `rounded-2xl border border-white/6 bg-white/2 hover:bg-white/4`
     - Restyle eyebrow and heading to match SaaS heading pattern
     - Preserve `export const dynamic = 'force-dynamic'`, all `fetchPackages()` logic, error banner, fallback notice, and `barFill`-less catalog layout
     - _Requirements: 14.2, 14.3_
 
 - [ ] 14. Update `app/page.tsx` — add new sections in correct order
-  - [ ] 14.1 Wire new sections into homepage
+  - [~] 14.1 Wire new sections into homepage
     - Import `WorkflowSectionLoader` from `@/components/WorkflowSectionLoader`
     - Import `FeaturesGrid` from `@/components/FeaturesGrid`
     - Import `StatsBar` from `@/components/StatsBar`
@@ -192,12 +192,12 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - Remove `GallerySection` import and usage (it's not part of the new section order per the design)
     - _Requirements: 6.1, 7.1, 8.1_
 
-- [ ] 15. Checkpoint — verify build passes
+- [~] 15. Checkpoint — verify build passes
   - Run `next build` (uses Turbopack by default in Next.js 16); fix any TypeScript errors or import issues before proceeding to tests.
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 16. Install fast-check and write property-based tests
-  - [ ] 16.1 Install fast-check
+  - [~] 16.1 Install fast-check
     - Run `npm install -D fast-check`
     - Create `__tests__/` directory at the project root if it doesn't exist
     - _Requirements: (test infrastructure)_
@@ -235,7 +235,7 @@ Incrementally migrate the Atlas Detailing Next.js 16 app from its current BEM + 
     - **Property 4: Count-up interpolation stays in bounds and is non-decreasing**
     - **Validates: Requirements 8.2**
 
-- [ ] 17. Final checkpoint — full build and test run
+- [~] 17. Final checkpoint — full build and test run
   - Run `next build` and confirm zero TypeScript errors and zero build warnings related to this feature.
   - Ensure all tests pass, ask the user if questions arise.
 
